@@ -16,20 +16,17 @@ struct WeatherHourlyView: View {
                         Text("\(item)h")
                             .fontWeight(.bold)
                         
-                        Image(systemName: "cloud.sun.rain.fill")
-                            .shadow(radius: 3)
-                            .symbolRenderingMode(.multicolor)
-                            .font(.system(size: 25))
-                            .padding()
-                        
+                        WeatherIconView(name: "cloud.sun.rain.fill")
+                    
                         Text("\(9)°")
                     }
                 }
             }
         }
         .padding(.vertical)
-        .background(.black.opacity(0.1))
+        .background(.black.opacity(0.05))
         .cornerRadius(12)
+        
     }
 }
 
