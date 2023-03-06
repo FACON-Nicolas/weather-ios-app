@@ -13,16 +13,28 @@ struct WeatherBarView: View {
     var begin: Int
     var end: Int
     var max: Int
+    var degree: Double = Double.infinity
     
     var body: some View {
         HStack {
             HStack {
+                HStack {
+                    
+                }
+                .frame(width: 4,  height: degree == Double.infinity ? 0 : 4)
+                .background(.white)
+                .cornerRadius(2)
+                .offset(x: degree != Double.infinity ?
+                        ((100 / CGFloat((max - min))) * CGFloat((degree - Double(begin))))
+                        : 0)
                 
+                Spacer()
             }
             .frame(width: (100 / CGFloat((max - min))) * CGFloat((end - begin)), height: 6)
             .background(Color.blue)
             .cornerRadius(3)
             .offset(x: (100 / CGFloat((max - min))) * CGFloat(begin - min))
+
             
             Spacer()
         }
@@ -34,7 +46,7 @@ struct WeatherBarView: View {
 
 struct WeatherBarView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherBarView(min: -1, begin: 0, end: 7, max: 9)
+        WeatherBarView(min: -2, begin: 2, end: 8, max: 12, degree: 7)
             .previewLayout(.sizeThatFits)
             .padding()
     }
