@@ -14,7 +14,8 @@ struct WeatherDailyView: View {
         VStack {
             ForEach(0..<3) { item in
                 HStack {
-                    Text("coucou")
+                    Text("25.")
+                        .font(.system(size: 25))
                         .fontWeight(.bold)
 
                     WeatherIconView(name: "sun.max.fill")
@@ -23,9 +24,10 @@ struct WeatherDailyView: View {
                     Text("0°")
                         .fontWeight(.bold)
                     
+                    WeatherBarView(min: 1, begin: 2, end: 12, max: 14, degree: 4)
+                    
                     Text("12°")
                         .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
                     
                 }
                 .padding(.horizontal)
