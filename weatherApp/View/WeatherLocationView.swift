@@ -8,26 +8,30 @@
 import SwiftUI
 
 struct WeatherLocationView: View {
+    
+    var city: String
+    @State var weather : WeatherModel = WeatherModel(city: "--", degrees: "", min: "", max: "", weather: "--")
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
                 VStack {
-                    Text("Lyon")
+                    Text(weather.city)
                         .font(.system(size: 30))
                         
-                    Text(" 10°")
+                    Text(" \(weather.degrees)°")
                         .font(.system(size: 90))
                         .fontWeight(.light)
                     
-                    Text("Sunny")
+                    Text(weather.weather)
                         .font(.system(size: 20))
                     
                     HStack {
                         Image(systemName: "arrow.up")
-                        Text("11°C")
+                        Text("\(weather.max)°C")
                         
                         Image(systemName: "arrow.down")
-                        Text("3°C")
+                        Text("\(weather.min)°C")
                     }
                 }
                 .shadow(radius: 3)
@@ -46,11 +50,15 @@ struct WeatherLocationView: View {
         ],
          startPoint: .top,
          endPoint: .bottom))
+        .task {
+            weather = await WeatherData.fetchWeather(city: city)
+        }
     }
+    
 }
 
 struct WeatherLocationView_Previews: PreviewProvider {
-    static var previews: some View {
-        WeatherLocationView()
+    static var previews:  some View {
+        WeatherLocationView(city: "Paris")
     }
 }
