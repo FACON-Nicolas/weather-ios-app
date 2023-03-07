@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherModel {
+struct WeatherModel: Identifiable {
     var id = UUID()
     var city: String
     var degrees : String
