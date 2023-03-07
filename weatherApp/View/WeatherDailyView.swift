@@ -12,26 +12,38 @@ struct WeatherDailyView: View {
     
     var body: some View {
         VStack {
-            ForEach(0..<3) { item in
-                HStack {
-                    Text("25.")
-                        .font(.system(size: 25))
-                        .fontWeight(.bold)
+            VStack {
+                HStack(spacing: 10) {
+                    Image(systemName: "calendar")
+                    Text("Weather Day by day".uppercased())
+                        .font(.system(size: 13))
 
-                    WeatherIconView(name: "sun.max.fill")
-                        .padding(.horizontal)
-                    
-                    Text("0°")
-                        .fontWeight(.bold)
-                    
-                    WeatherBarView(min: 1, begin: 2, end: 12, max: 14, degree: 4)
-                    
-                    Text("12°")
-                        .fontWeight(.bold)
-                    
+                    Spacer()
                 }
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.white.opacity(0.5))
+                Divider().padding(.horizontal, 10).padding(.bottom, 5)
+                ForEach(0..<3) { item in
+                    HStack {
+                        Text("25.")
+                            .font(.system(size: 25))
+                            .fontWeight(.bold)
+
+                        WeatherIconView(name: "sun.max.fill")
+                            .padding(.horizontal)
+                        
+                        Text("0°")
+                            .fontWeight(.bold)
+                        
+                        WeatherBarView(min: 1, begin: 2, end: 12, max: 14, degree: 4)
+                        
+                        Text("12°")
+                            .fontWeight(.bold)
+                        
+                    }
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity)
+                }
             }
         }
         .background(.black.opacity(0.05))
