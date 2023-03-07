@@ -11,6 +11,7 @@ struct WeatherLocationView: View {
     
     var city: String
     @State var weather : WeatherModel = WeatherModel(city: "--", degrees: "", min: "", max: "", weather: "--")
+    @State var week : WeatherWeek = WeatherWeek()
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -40,7 +41,7 @@ struct WeatherLocationView: View {
                 WeatherHourlyView()
                     .padding(.horizontal)
                 
-                WeatherDailyView()
+                WeatherDailyView(week: week)
             }
             .foregroundColor(.white)
         }
@@ -52,6 +53,8 @@ struct WeatherLocationView: View {
          endPoint: .bottom))
         .task {
             weather = await WeatherData.fetchWeather(city: city)
+            week = WeatherData.fetchWeek()
+            week.degrees = Double(weather.degrees)!
         }
     }
     
