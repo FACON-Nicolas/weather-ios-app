@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WeatherHour {
+struct WeatherHour: Identifiable {
     var id = UUID()
     var degrees: String
     var weather : String

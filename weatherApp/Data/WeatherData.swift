@@ -41,4 +41,29 @@ class WeatherData {
         weather.weather = myConditionDatas["value"] as! String
         return weather
     }
+    
+    static func dayOfWeek(date: String) -> String {
+        let dateString = String(date.split(separator: " ")[0])
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let date = dateFormatter.date(from: dateString) {
+            let calendar = Calendar.current
+            let weekday = calendar.component(.weekday, from: date)
+            let weekdayName = dateFormatter.weekdaySymbols[weekday - 1]
+            let range = weekdayName.index(weekdayName.startIndex, offsetBy: 3)
+            return String(weekdayName[..<range]) + "."
+        } else {
+            return ""
+        }
+    }
+    
+    static func fetchDay(index: Int) -> WeatherDaily {
+        let d = myWeatherDailyDatas[index]
+        let date = d["localObsDateTime"] as! String
+        var day = WeatherDaily(minTemp: 0, maxTemp: 0, day: "")
+        day.day = dayOfWeek(date: date)
+        day.minTemp = Int(d["mintempC"] as! String)!
+        day.maxTemp = Int(d["maxtempC"] as! String)!
+        return day
+    }
 }
