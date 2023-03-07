@@ -7,21 +7,25 @@
 
 import Foundation
 import SwiftUI
-import WebKit
 
 class WeatherData {
     
     private static var myDatas: [String:AnyObject] = [:]
     private static var myWeatherDatas: [String:AnyObject] = [:]
+    private static var myWeatherDailyDatas: [[String:AnyObject]] = []
+    private static var myAstronomyDatas: [String:AnyObject] = [:]
     private static var myConditionDatas: [String:AnyObject] = [:]
 
     static func fetchJson(city: String) async {
         do {
             let (data, _) = try await URLSession.shared.data(from: URL(string: "https://wttr.in/\(city)?format=j2")!)
             let json = try JSONSerialization.jsonObject(with: data) as! Dictionary<String, AnyObject>
-            myDatas = ((json["current_condition"] as! NSArray)[0] as! Dictionary<String, AnyObject>)
-            myWeatherDatas = ((json["weather"] as! NSArray)[0] as! Dictionary<String, AnyObject>)
-            myConditionDatas = ((myDatas["weatherDesc"] as! NSArray)[0] as! Dictionary<String, AnyObject>)
+            myDatas = (json["current_condition"] as! [[String: AnyObject]])[0]
+            myWeatherDailyDatas = (json["weather"] as! [[String: AnyObject]])
+            myWeatherDatas = myWeatherDailyDatas[0]
+            myConditionDatas = (myDatas["weatherDesc"] as! [[String: AnyObject]])[0]
+            myAstronomyDatas = (myWeatherDailyDatas[0]["astronomy"] as! [[String:AnyObject]])[0] as [String:AnyObject]
+            print(json)
         } catch {
             print("error")
         }
