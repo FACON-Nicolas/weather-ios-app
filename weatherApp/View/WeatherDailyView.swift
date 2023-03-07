@@ -10,38 +10,56 @@ import SwiftUI
 
 struct WeatherDailyView: View {
     
+    let week: WeatherWeek
+    
     var body: some View {
         VStack {
             VStack {
-                HStack(spacing: 10) {
-                    Image(systemName: "calendar")
-                    Text("Weather Day by day".uppercased())
-                        .font(.system(size: 13))
-
-                    Spacer()
-                }
-                .padding()
-                .foregroundColor(.white.opacity(0.5))
-                Divider().padding(.horizontal, 10).padding(.bottom, 5)
-                ForEach(0..<3) { item in
+                VStack {
                     HStack {
-                        Text("25.")
+                        Image(systemName: "calendar")
+                        Text("Weather Day by day".uppercased())
+                            .font(.system(size: 13))
+
+                        Spacer()
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 5)
+                    .padding(.top, 8)
+                    .foregroundColor(.white.opacity(0.5))
+                }
+                ForEach(week.days) { day in
+                    Divider().padding(.horizontal, 10).padding(.bottom, 5)
+                    HStack {
+                        Text("\(day.day).")
                             .font(.system(size: 25))
                             .fontWeight(.bold)
+                            .frame(width: 60)
+                            .padding(3)
 
+                        Spacer()
+                        
                         WeatherIconView(name: "sun.max.fill")
                             .padding(.horizontal)
                         
-                        Text("0°")
+                        Spacer()
+                        
+                        Text("\(day.minTemp)°")
                             .fontWeight(.bold)
                         
-                        WeatherBarView(min: 1, begin: 2, end: 12, max: 14, degree: 4)
+                        Spacer()
                         
-                        Text("12°")
+                        WeatherBarView(min: Int(week.min), begin: day.minTemp, end: day.maxTemp, max: Int(week.max), degree: (week.days.firstIndex(of: day) == 0 ? week.degrees! : Double.infinity))
+                        
+                        Spacer()
+                        
+                        Text("\(day.maxTemp)°")
                             .fontWeight(.bold)
                         
+                        Spacer()
                     }
                     .padding(.horizontal)
+                    .padding(.bottom, week.days.firstIndex(of: day) == week.days.count - 1 ? 15 : 0)
                     .frame(maxWidth: .infinity)
                 }
             }
@@ -53,8 +71,13 @@ struct WeatherDailyView: View {
 }
 
 struct WeatherDailyView_Previews: PreviewProvider {
+    static var week = WeatherWeek(days: [
+        WeatherDaily(minTemp: 3, maxTemp: 9, day: "Mon"),
+        WeatherDaily(minTemp: 2, maxTemp: 11, day: "Tue"),
+        WeatherDaily(minTemp: 5, maxTemp: 8, day: "Wed"),
+    ], min: 2, max: 11, degrees: 4)
     static var previews: some View {
-        WeatherDailyView()
+        WeatherDailyView(week: week)
             .previewLayout(.sizeThatFits)
     }
 }
