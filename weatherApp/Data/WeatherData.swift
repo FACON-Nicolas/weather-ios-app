@@ -25,7 +25,6 @@ class WeatherData {
             myWeatherDatas = myWeatherDailyDatas[0]
             myConditionDatas = (myDatas["weatherDesc"] as! [[String: AnyObject]])[0]
             myAstronomyDatas = (myWeatherDailyDatas[0]["astronomy"] as! [[String:AnyObject]])[0] as [String:AnyObject]
-            print(json)
         } catch {
             print("error")
         }
@@ -51,7 +50,7 @@ class WeatherData {
             let weekday = calendar.component(.weekday, from: date)
             let weekdayName = dateFormatter.weekdaySymbols[weekday - 1]
             let range = weekdayName.index(weekdayName.startIndex, offsetBy: 3)
-            return String(weekdayName[..<range]) + "."
+            return String(weekdayName[..<range])
         } else {
             return ""
         }
@@ -59,11 +58,30 @@ class WeatherData {
     
     static func fetchDay(index: Int) -> WeatherDaily {
         let d = myWeatherDailyDatas[index]
-        let date = d["localObsDateTime"] as! String
+        let date = d["date"] as! String
         var day = WeatherDaily(minTemp: 0, maxTemp: 0, day: "")
         day.day = dayOfWeek(date: date)
         day.minTemp = Int(d["mintempC"] as! String)!
         day.maxTemp = Int(d["maxtempC"] as! String)!
         return day
+    }
+    
+    static func fetchWeek() -> WeatherWeek {
+        
+        var days: [WeatherDaily] = []
+        var week = WeatherWeek()
+        for i in 0..<myWeatherDailyDatas.count {
+            let day = fetchDay(index: i)
+            days.append(day)
+            if Double(day.maxTemp) > week.max {
+                week.max = Double(day.maxTemp)
+            }
+            if Double(day.minTemp) < week.min {
+                week.min = Double(day.minTemp)
+            }
+        }
+        
+        week.days = days
+        return week
     }
 }
