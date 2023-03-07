@@ -9,16 +9,29 @@ import SwiftUI
 
 struct WeatherHourlyView: View {
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(0..<20) { item in
-                    VStack {
-                        Text("\(item)h")
-                            .fontWeight(.bold)
+        VStack {
+            VStack {
+                HStack {
+                    Image(systemName: "clock")
+                    Text("Weather hour by hour".uppercased())
+                        .font(.system(size: 13))
+                    Spacer()
+                }
+                .padding(.horizontal, 15)
+                Divider().padding(.horizontal, 10).padding(.bottom, 5)
+            }
+            .foregroundColor(.white.opacity(0.5))
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(0..<20) { item in
+                        VStack {
+                            Text("\(item)h")
+                                .fontWeight(.bold)
+                            
+                            WeatherIconView(name: "cloud.sun.rain.fill")
                         
-                        WeatherIconView(name: "cloud.sun.rain.fill")
-                    
-                        Text("\(9)°")
+                            Text("\(9)°")
+                        }
                     }
                 }
             }
@@ -26,6 +39,7 @@ struct WeatherHourlyView: View {
         .padding(.vertical)
         .background(.black.opacity(0.05))
         .cornerRadius(12)
+        .foregroundColor(.white)
         
     }
 }
