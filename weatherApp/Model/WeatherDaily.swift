@@ -16,8 +16,8 @@ extension Date {
 }
 
 struct WeatherDaily {
-    var minTemp: String
-    var maxTemp: String
+    var minTemp: Int
+    var maxTemp: Int
     var weather: String
     var day: String
 }
