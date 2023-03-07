@@ -8,7 +8,8 @@
 import Foundation
 
 struct WeatherWeek {
-    var days : [WeatherDaily]
-    var min: Int
-    var max: Int
+    var days : [WeatherDaily] = []
+    var min: Double = Double.infinity
+    var max: Double = -Double.infinity
+    var degrees: Double?
 }
