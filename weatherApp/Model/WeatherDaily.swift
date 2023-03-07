@@ -7,17 +7,9 @@
 
 import Foundation
 
-extension Date {
-    func dayOfWeek() -> String? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        return dateFormatter.string(from: self).capitalized
-    }
-}
-
-struct WeatherDaily {
+struct WeatherDaily: Identifiable, Equatable {
+    var id = UUID()
     var minTemp: Int
     var maxTemp: Int
-    var weather: String
     var day: String
 }
