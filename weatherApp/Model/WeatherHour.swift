@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+struct WeatherHour {
+    var id = UUID()
+    var degrees: String
+    var weather : String
+    var hour: String
+    var date: String
+    
+}
