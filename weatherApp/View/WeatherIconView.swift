@@ -15,7 +15,7 @@ struct WeatherIconView: View {
         Image(systemName: name)
             .symbolRenderingMode(.multicolor)
             .font(.system(size: 25))
-            .padding()
+            .padding(5)
     }
 }
 
