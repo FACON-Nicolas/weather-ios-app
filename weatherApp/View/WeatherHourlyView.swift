@@ -18,6 +18,7 @@ struct WeatherHourlyView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 15)
+                .foregroundColor(.white.opacity(0.5))
                 Divider().padding(.horizontal, 10).padding(.bottom, 5)
             }
             .foregroundColor(.white.opacity(0.5))
@@ -29,6 +30,7 @@ struct WeatherHourlyView: View {
                                 .fontWeight(.bold)
                             
                             WeatherIconView(name: "cloud.sun.rain.fill")
+                                .padding()
                         
                             Text("\(9)°")
                         }
