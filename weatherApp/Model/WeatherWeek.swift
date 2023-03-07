@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct WeatherWeek {
+    var days : [WeatherDaily]
+    var min: Int
+    var max: Int
+}
