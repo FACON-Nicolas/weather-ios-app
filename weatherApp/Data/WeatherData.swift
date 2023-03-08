@@ -15,6 +15,7 @@ class WeatherData {
     private static var myAstronomyDatas: [String:AnyObject] = [:]
     private static var myConditionDatas: [String:AnyObject] = [:]
     private static var myWeatherHourlyDatas: [[String:AnyObject]] = []
+    private static var myCurrentConditionDatas: [String:AnyObject] = [:]
 
     static func fetchJson(city: String) async {
         do {
@@ -24,6 +25,7 @@ class WeatherData {
             myWeatherDatas = myDatas[0]
             myWeatherHourlyDatas = myWeatherDatas["hourly"] as! [[String:AnyObject]]
             myConditionDatas = (myWeatherHourlyDatas[0]["weatherDesc"] as! [[String: AnyObject]])[0]
+            myCurrentConditionDatas = (json["current_condition"] as! [[String:AnyObject]])[0]
         } catch {
             print("error")
         }
@@ -33,7 +35,7 @@ class WeatherData {
         await fetchJson(city: city)
         var weather = WeatherModel(city: "--", degrees: "0", min: "0", max: "0", weather: "--")
         weather.city = city
-        weather.degrees = myWeatherHourlyDatas[0]["tempC"] as! String
+        weather.degrees = myCurrentConditionDatas["temp_C"] as! String
         weather.min = myWeatherDatas["mintempC"] as! String
         weather.max = myWeatherDatas["maxtempC"] as! String
         weather.weather = myConditionDatas["value"] as! String
@@ -52,6 +54,18 @@ class WeatherData {
             return String(weekdayName[..<range])
         } else {
             return ""
+        }
+    }
+    
+    static func getIconName(weather: String) -> String {
+        if (weather.uppercased().contains("snow".uppercased())) {
+            return "snowflake"
+        } else if weather.uppercased().contains("rain".uppercased()) || weather.uppercased().contains("drizzle".uppercased()) || weather.uppercased().contains("sleet".uppercased()) {
+            return "cloud.rain.fill"
+        } else if weather.uppercased().contains("overcast".uppercased()) || weather.uppercased().contains("cloud".uppercased()) {
+            return "cloud.fill"
+        } else {
+            return "sun.max.fill"
         }
     }
     
@@ -83,5 +97,38 @@ class WeatherData {
         
         week.days = days
         return week
+    }
+    
+    static func getHour(index: Int) -> String {
+        var hour = 3 * index
+        var m = "AM"
+        if (hour >= 12) {
+            hour %= 12
+            m = "PM"
+        }
+        if (hour == 0) {
+            hour = 12
+        }
+        return String(hour) + " " + m
+    }
+    
+    static func fetchHour(index: Int) -> WeatherHour {
+        var weatherHour = WeatherHour(degrees: "", weather: "", hour: "")
+        
+        let hour = myWeatherHourlyDatas[index]
+        weatherHour.degrees = hour["tempC"] as! String
+        weatherHour.weather = (hour["weatherDesc"] as! [[String: AnyObject]])[0]["value"] as! String
+        weatherHour.hour = getHour(index: index)
+        return weatherHour
+    }
+    
+    static func fetchHours() -> WeatherHours {
+        
+        var hours: WeatherHours = WeatherHours()
+        
+        for i in 0..<myWeatherHourlyDatas.count {
+            hours.append(fetchHour(index: i))
+        }
+        return hours
     }
 }
