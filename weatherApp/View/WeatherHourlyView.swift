@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct WeatherHourlyView: View {
+    
+    var hours: WeatherHours
+    
     var body: some View {
         VStack {
             VStack {
@@ -24,15 +27,9 @@ struct WeatherHourlyView: View {
             .foregroundColor(.white.opacity(0.5))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(0..<20) { item in
+                    ForEach(hours.hours) { item in
                         VStack {
-                            Text("\(item)h")
-                                .fontWeight(.bold)
-                            
-                            WeatherIconView(name: "cloud.sun.rain.fill")
-                                .padding()
-                        
-                            Text("\(9)°")
+                            WeatherHourView(weatherHour: item)
                         }
                     }
                 }
@@ -48,7 +45,14 @@ struct WeatherHourlyView: View {
 
 struct WeatherHourlyView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherHourlyView()
+        WeatherHourlyView(hours: WeatherHours(hours: [
+            WeatherHour(degrees: "3", weather: "cloudy", hour: "1PM"),
+            WeatherHour(degrees: "2", weather: "cloudy", hour: "2PM"),
+            WeatherHour(degrees: "4", weather: "cloudy", hour: "3PM"),
+            WeatherHour(degrees: "3", weather: "cloudy", hour: "4PM"),
+            WeatherHour(degrees: "2", weather: "cloudy", hour: "5PM"),
+            WeatherHour(degrees: "1", weather: "cloudy", hour: "6PM")
+        ]))
             .previewLayout(.sizeThatFits)
             .padding()
     }
