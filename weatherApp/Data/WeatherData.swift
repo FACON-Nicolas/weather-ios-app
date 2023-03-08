@@ -10,21 +10,20 @@ import SwiftUI
 
 class WeatherData {
     
-    private static var myDatas: [String:AnyObject] = [:]
+    private static var myDatas: [[String:AnyObject]] = []
     private static var myWeatherDatas: [String:AnyObject] = [:]
-    private static var myWeatherDailyDatas: [[String:AnyObject]] = []
     private static var myAstronomyDatas: [String:AnyObject] = [:]
     private static var myConditionDatas: [String:AnyObject] = [:]
+    private static var myWeatherHourlyDatas: [[String:AnyObject]] = []
 
     static func fetchJson(city: String) async {
         do {
-            let (data, _) = try await URLSession.shared.data(from: URL(string: "https://wttr.in/\(city)?format=j2")!)
+            let (data, _) = try await URLSession.shared.data(from: URL(string: "https://wttr.in/\(city)?format=j1")!)
             let json = try JSONSerialization.jsonObject(with: data) as! Dictionary<String, AnyObject>
-            myDatas = (json["current_condition"] as! [[String: AnyObject]])[0]
-            myWeatherDailyDatas = (json["weather"] as! [[String: AnyObject]])
-            myWeatherDatas = myWeatherDailyDatas[0]
-            myConditionDatas = (myDatas["weatherDesc"] as! [[String: AnyObject]])[0]
-            myAstronomyDatas = (myWeatherDailyDatas[0]["astronomy"] as! [[String:AnyObject]])[0] as [String:AnyObject]
+            myDatas = (json["weather"] as! [[String: AnyObject]])
+            myWeatherDatas = myDatas[0]
+            myWeatherHourlyDatas = myWeatherDatas["hourly"] as! [[String:AnyObject]]
+            myConditionDatas = (myWeatherHourlyDatas[0]["weatherDesc"] as! [[String: AnyObject]])[0]
         } catch {
             print("error")
         }
@@ -34,7 +33,7 @@ class WeatherData {
         await fetchJson(city: city)
         var weather = WeatherModel(city: "--", degrees: "0", min: "0", max: "0", weather: "--")
         weather.city = city
-        weather.degrees = myDatas["temp_C"] as! String
+        weather.degrees = myWeatherHourlyDatas[0]["tempC"] as! String
         weather.min = myWeatherDatas["mintempC"] as! String
         weather.max = myWeatherDatas["maxtempC"] as! String
         weather.weather = myConditionDatas["value"] as! String
@@ -56,8 +55,9 @@ class WeatherData {
         }
     }
     
+    
     static func fetchDay(index: Int) -> WeatherDaily {
-        let d = myWeatherDailyDatas[index]
+        let d = myDatas[index]
         let date = d["date"] as! String
         var day = WeatherDaily(minTemp: 0, maxTemp: 0, day: "")
         day.day = dayOfWeek(date: date)
@@ -70,7 +70,7 @@ class WeatherData {
         
         var days: [WeatherDaily] = []
         var week = WeatherWeek()
-        for i in 0..<myWeatherDailyDatas.count {
+        for i in 0..<myDatas.count {
             let day = fetchDay(index: i)
             days.append(day)
             if Double(day.maxTemp) > week.max {
