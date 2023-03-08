@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct WeatherHours {
+    var hours: [WeatherHour] = []
+    
+    mutating func append(_ weatherHour: WeatherHour) {
+        self.hours.append(weatherHour)
+    }
+}
