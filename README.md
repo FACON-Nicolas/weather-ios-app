@@ -32,6 +32,9 @@ To realize this API, this is the program:
         do {
             let (data, _) = try await URLSession.shared.data(from: URL(string: "https://wttr.in/\(city)?format=j1")!)
             let json = try JSONSerialization.jsonObject(with: data) as! Dictionary<String, AnyObject>
+            //                      ...
+            // program to get datas for my model and my view
+            //                      ...
         } catch {
             print("error")
         }
