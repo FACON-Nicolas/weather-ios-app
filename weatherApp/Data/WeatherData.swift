@@ -69,6 +69,27 @@ class WeatherData {
         }
     }
     
+    static func getColorsName(weather: String) -> [Color] {
+        let icon = getIconName(weather: weather)
+        switch (icon) {
+        case "snowflake", "sun.max.fill":
+            return [
+                Color("SunnyLight"),
+                Color("SunnyDark")
+            ]
+        case "cloud.rain.fill":
+            return [
+                Color("RainLight"),
+                Color("RainDark")
+            ]
+        default:
+            return [
+                Color("CloudyLight"),
+                Color("CloudyDark")
+            ]
+        }
+    }
+    
     
     static func fetchDay(index: Int) -> WeatherDaily {
         let d = myDatas[index]
