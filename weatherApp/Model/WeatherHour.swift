@@ -12,6 +12,4 @@ struct WeatherHour: Identifiable {
     var degrees: String
     var weather : String
     var hour: String
-    var date: String
-    
 }
