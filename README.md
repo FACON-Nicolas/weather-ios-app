@@ -8,6 +8,6 @@
 
 This project is my first application developped in swiftUI. This application calls an API on the web to get more details about the weather in the city you gave, for the moment, it is impossible to know the city you're when you're using the application, it will be added in the future.
 
-![](https://raw.githubusercontent.com/FACON-Nicolas/FACON-Nicolas/main/resources/weather.png?raw=true)
+<img src="https://raw.githubusercontent.com/FACON-Nicolas/FACON-Nicolas/main/resources/weather.png?raw=true" width="400">
 
 
