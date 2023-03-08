@@ -46,10 +46,7 @@ struct WeatherLocationView: View {
             }
             .foregroundColor(.white)
         }
-        .background(LinearGradient(colors: [
-            Color("SunnyLight"),
-            Color("SunnyDark")
-        ],
+        .background(LinearGradient(colors: WeatherData.getColorsName(weather: weather.weather),
          startPoint: .top,
          endPoint: .bottom))
         .task {
