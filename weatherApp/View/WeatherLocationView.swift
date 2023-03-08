@@ -12,12 +12,13 @@ struct WeatherLocationView: View {
     var city: String
     @State var weather : WeatherModel = WeatherModel(city: "--", degrees: "", min: "", max: "", weather: "--")
     @State var week : WeatherWeek = WeatherWeek()
+    @State var hours: WeatherHours = WeatherHours()
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
                 VStack {
-                    Text(weather.city)
+                    Text(weather.city.capitalized)
                         .font(.system(size: 30))
                         
                     Text(" \(weather.degrees)°")
@@ -38,7 +39,7 @@ struct WeatherLocationView: View {
                 .shadow(radius: 3)
                 .padding(50)
                 
-                WeatherHourlyView()
+                WeatherHourlyView(hours: hours)
                     .padding(.horizontal)
                 
                 WeatherDailyView(week: week)
@@ -55,6 +56,7 @@ struct WeatherLocationView: View {
             weather = await WeatherData.fetchWeather(city: city)
             week = WeatherData.fetchWeek()
             week.degrees = Double(weather.degrees)!
+            hours = WeatherData.fetchHours()
         }
     }
     
@@ -62,6 +64,6 @@ struct WeatherLocationView: View {
 
 struct WeatherLocationView_Previews: PreviewProvider {
     static var previews:  some View {
-        WeatherLocationView(city: "Paris")
+        WeatherLocationView(city: "lens")
     }
 }
