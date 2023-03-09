@@ -55,5 +55,6 @@ struct WeatherHourlyView_Previews: PreviewProvider {
         ]))
             .previewLayout(.sizeThatFits)
             .padding()
+            .background(Color("SunnyDark"))
     }
 }
