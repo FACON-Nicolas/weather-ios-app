@@ -98,6 +98,7 @@ class WeatherData {
         day.day = dayOfWeek(date: date)
         day.minTemp = Int(d["mintempC"] as! String)!
         day.maxTemp = Int(d["maxtempC"] as! String)!
+        day.hours = fetchHours(day: index)
         return day
     }
     
@@ -133,22 +134,23 @@ class WeatherData {
         return String(hour) + " " + m
     }
     
-    static func fetchHour(index: Int) -> WeatherHour {
+    static func fetchHour(index: Int, day: Int) -> WeatherHour {
         var weatherHour = WeatherHour(degrees: "", weather: "", hour: "")
         
-        let hour = myWeatherHourlyDatas[index]
+        let hours = day == 0 ? myWeatherHourlyDatas : myDatas[day]["hourly"] as! [[String:AnyObject]]
+        let hour = hours[index]
         weatherHour.degrees = hour["tempC"] as! String
         weatherHour.weather = (hour["weatherDesc"] as! [[String: AnyObject]])[0]["value"] as! String
         weatherHour.hour = getHour(index: index)
         return weatherHour
     }
     
-    static func fetchHours() -> WeatherHours {
+    static func fetchHours(day: Int) -> WeatherHours {
         
         var hours: WeatherHours = WeatherHours()
         
         for i in 0..<myWeatherHourlyDatas.count {
-            hours.append(fetchHour(index: i))
+            hours.append(fetchHour(index: i, day: day))
         }
         return hours
     }
