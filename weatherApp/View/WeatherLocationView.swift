@@ -56,7 +56,7 @@ struct WeatherLocationView: View {
                 weather.city = city
                 week = WeatherData.fetchWeek()
                 week.degrees = Double(weather.degrees)!
-                hours = WeatherData.fetchHours()
+                hours = WeatherData.fetchHours(day: 0)
             }
         }
         .background(LinearGradient(colors: WeatherData.getColorsName(weather: weather.weather),
