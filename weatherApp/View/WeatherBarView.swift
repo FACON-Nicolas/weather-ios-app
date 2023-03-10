@@ -30,15 +30,15 @@ struct WeatherBarView: View {
                 
                 Spacer()
             }
-            .frame(width: (100 / CGFloat((max - min))) * CGFloat((end - begin)), height: 6)
+            .frame(width: (90 / CGFloat((max - min))) * CGFloat((end - begin)), height: 6)
             .background(Color.blue)
             .cornerRadius(3)
-            .offset(x: (100 / CGFloat((max - min))) * CGFloat(begin - min))
+            .offset(x: (90 / CGFloat((max - min))) * CGFloat(begin - min))
 
             
             Spacer()
         }
-        .frame(width: 100, height: 6)
+        .frame(width: 90, height: 6)
         .background(Color.black.opacity(0.2))
         .cornerRadius(3)
     }
