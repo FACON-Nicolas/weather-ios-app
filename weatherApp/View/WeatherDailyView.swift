@@ -39,7 +39,7 @@ struct WeatherDailyView: View {
 
                         Spacer()
                         
-                        WeatherIconView(name: "sun.max.fill")
+                        WeatherIconView(name: day.weather())
                             .padding(.horizontal)
                         
                         Spacer()
